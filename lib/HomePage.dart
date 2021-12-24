@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import './Widgets/ListItem.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -39,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   void dispose() {
     super.dispose();
     _animationController.dispose();
+    _rotateAnimationController.dispose();
   }
 
   @override
@@ -85,13 +88,26 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 children: [
                   Container(
                     margin: EdgeInsets.only(left: 20, top: 70),
-                    child: Text(
-                      'Covid-19 Stats',
-                      style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontSize: 40,
-                          fontWeight: FontWeight.w900,
-                          fontFamily: 'Inter'),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Covid-19 Tracker',
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 30,
+                              fontWeight: FontWeight.w900,
+                              fontFamily: 'Inter'),
+                        ),
+                        Text(
+                          'Srilanka',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 30,
+                              fontWeight: FontWeight.w900,
+                              fontFamily: 'Inter'),
+                        ),
+                      ],
                     ),
                   ),
                   Container(
@@ -117,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 90, right: 20, bottom: 10),
+                    margin: EdgeInsets.only(top: 110, right: 20, bottom: 10),
                     width: double.infinity,
                     alignment: Alignment.centerRight,
                     child: Column(
@@ -156,137 +172,166 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   ),
                   Column(
                     children: [
-                      Container(
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 4,
-                              child: Container(
-                                padding: EdgeInsets.only(top: 5),
-                                margin: EdgeInsets.all(5),
-                                height: 120,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                      color: Theme.of(context).primaryColor,
-                                      width: 2),
-                                  color: Colors.black45,
-                                ),
-                                child: Column(
-                                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child: AnimatedBuilder(
-                                              animation: _colorTween,
-                                              builder: (context, child) =>
-                                                  Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 8),
-                                                child: Icon(
-                                                  Icons.circle,
-                                                  size: 10.0,
-                                                  color: _colorTween.value,
-                                                ),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 4,
+                            child: Container(
+                              padding: EdgeInsets.only(top: 5),
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 5, vertical: 20),
+                              height: 120,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                    color: Theme.of(context).primaryColor,
+                                    width: 2),
+                                color: Colors.black45,
+                              ),
+                              child: Column(
+                                // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: AnimatedBuilder(
+                                            animation: _colorTween,
+                                            builder: (context, child) =>
+                                                Padding(
+                                              padding:
+                                                  const EdgeInsets.only(top: 6),
+                                              child: Icon(
+                                                Icons.circle,
+                                                size: 10.0,
+                                                color: _colorTween.value,
                                               ),
                                             ),
                                           ),
-                                          Expanded(
-                                            flex: 3,
-                                            child: Text(
-                                              'New Cases',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 20),
-                                            ),
+                                        ),
+                                        Expanded(
+                                          flex: 3,
+                                          child: Text(
+                                            'New Cases',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
-                                    Expanded(
-                                      flex: 2,
-                                      child: postMdl.loading
-                                          ? Text(
-                                              'Loading',
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .primaryColor,
-                                                  fontSize: 20,
-                                                  fontFamily: 'Orbitron'),
-                                            )
-                                          : Text(
-                                              postMdl.post.todayCases
-                                                  .toString(),
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .primaryColor,
-                                                  fontSize: 30,
-                                                  fontFamily: 'Orbitron'),
-                                            ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: postMdl.loading
+                                        ? Text(
+                                            'Loading',
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                fontSize: 20,
+                                                fontFamily: 'Orbitron'),
+                                          )
+                                        : Text(
+                                            NumberFormat.decimalPattern()
+                                                .format(
+                                                    postMdl.post.todayCases),
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                fontSize: 30,
+                                                fontFamily: 'Inter'),
+                                          ),
+                                  ),
+                                ],
                               ),
                             ),
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                padding: EdgeInsets.only(top: 5),
-                                margin: EdgeInsets.all(5),
-                                height: 120,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                      color: Theme.of(context).primaryColor,
-                                      width: 2),
-                                  color: Colors.black45,
-                                ),
-                                child: Column(
-                                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: Text(
-                                        'Deaths',
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 20),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 2,
-                                      child: postMdl.loading
-                                          ? Text(
-                                              'Loading',
-                                              style: TextStyle(
-                                                  color: Colors.redAccent,
-                                                  fontSize: 20,
-                                                  fontFamily: 'Orbitron'),
-                                            )
-                                          : Text(
-                                              postMdl.post.todayDeath
-                                                  .toString(),
-                                              style: TextStyle(
-                                                  color: Colors.redAccent,
-                                                  fontSize: 30,
-                                                  fontFamily: 'Orbitron'),
-                                            ),
-                                    ),
-                                  ],
-                                ),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Container(
+                              padding: EdgeInsets.only(top: 5),
+                              margin: EdgeInsets.all(5),
+                              height: 120,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                    color: Theme.of(context).primaryColor,
+                                    width: 2),
+                                color: Colors.black45,
                               ),
-                            )
-                          ],
-                        ),
+                              child: Column(
+                                // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: AnimatedBuilder(
+                                            animation: _colorTween,
+                                            builder: (context, child) =>
+                                                Padding(
+                                              padding:
+                                                  const EdgeInsets.only(top: 4),
+                                              child: Icon(
+                                                Icons.circle,
+                                                size: 10.0,
+                                                color: _colorTween.value,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 3,
+                                          child: Text(
+                                            'New Deaths',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 16),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: postMdl.loading
+                                        ? Text(
+                                            'Loading',
+                                            style: TextStyle(
+                                                color: Colors.orange,
+                                                fontSize: 20,
+                                                fontFamily: 'Orbitron'),
+                                          )
+                                        : Text(
+                                            NumberFormat.decimalPattern()
+                                                .format(
+                                                    postMdl.post.todayDeath),
+                                            style: TextStyle(
+                                                color: Colors.orange,
+                                                fontSize: 30,
+                                                fontFamily: 'Inter'),
+                                          ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                       Row(
                         children: [
@@ -294,8 +339,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             flex: 1,
                             child: Container(
                               padding: EdgeInsets.only(top: 5),
-                              margin: EdgeInsets.all(5),
-                              height: 120,
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 5, vertical: 10),
+                              height: 80,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
@@ -312,7 +358,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     child: Text(
                                       'Total Cases',
                                       style: TextStyle(
-                                          color: Colors.white, fontSize: 20),
+                                          color: Colors.white, fontSize: 16),
                                     ),
                                   ),
                                   Expanded(
@@ -321,16 +367,20 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         ? Text(
                                             'Loading',
                                             style: TextStyle(
-                                                color: Colors.redAccent,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
                                                 fontSize: 20,
                                                 fontFamily: 'Orbitron'),
                                           )
                                         : Text(
-                                            postMdl.post.totalDeath.toString(),
+                                            NumberFormat.decimalPattern()
+                                                .format(
+                                                    postMdl.post.totalCases),
                                             style: TextStyle(
-                                                color: Colors.redAccent,
-                                                fontSize: 30,
-                                                fontFamily: 'Orbitron'),
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                fontSize: 22,
+                                                fontFamily: 'Inter'),
                                           ),
                                   ),
                                 ],
@@ -341,8 +391,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             flex: 1,
                             child: Container(
                               padding: EdgeInsets.only(top: 5),
-                              margin: EdgeInsets.all(5),
-                              height: 120,
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 5, vertical: 10),
+                              height: 80,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
@@ -359,7 +410,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     child: Text(
                                       'Total Recovered',
                                       style: TextStyle(
-                                          color: Colors.white, fontSize: 20),
+                                          color: Colors.white, fontSize: 16),
                                     ),
                                   ),
                                   Expanded(
@@ -368,16 +419,126 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         ? Text(
                                             'Loading',
                                             style: TextStyle(
-                                                color: Colors.redAccent,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
                                                 fontSize: 20,
                                                 fontFamily: 'Orbitron'),
                                           )
                                         : Text(
-                                            postMdl.post.totalDeath.toString(),
+                                            NumberFormat.decimalPattern()
+                                                .format(postMdl
+                                                    .post.totalRecovered),
                                             style: TextStyle(
-                                                color: Colors.redAccent,
-                                                fontSize: 30,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                fontSize: 22,
+                                                fontFamily: 'Inter'),
+                                          ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: Container(
+                              padding: EdgeInsets.only(top: 5),
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 5, vertical: 10),
+                              height: 80,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                    color: Theme.of(context).primaryColor,
+                                    width: 2),
+                                color: Colors.black45,
+                              ),
+                              child: Column(
+                                // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      'Total Deaths',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 16),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: postMdl.loading
+                                        ? Text(
+                                            'Loading',
+                                            style: TextStyle(
+                                                color: Colors.orange,
+                                                fontSize: 20,
                                                 fontFamily: 'Orbitron'),
+                                          )
+                                        : Text(
+                                            NumberFormat.decimalPattern()
+                                                .format(
+                                                    postMdl.post.totalDeath),
+                                            style: TextStyle(
+                                                color: Colors.orange,
+                                                fontSize: 22,
+                                                fontFamily: 'Inter'),
+                                          ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 4,
+                            child: Container(
+                              padding: EdgeInsets.only(top: 5),
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 5, vertical: 10),
+                              height: 80,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                    color: Theme.of(context).primaryColor,
+                                    width: 2),
+                                color: Colors.black45,
+                              ),
+                              child: Column(
+                                // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      'Total Active',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 16),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: postMdl.loading
+                                        ? Text(
+                                            'Loading',
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                fontSize: 20,
+                                                fontFamily: 'Orbitron'),
+                                          )
+                                        : Text(
+                                            NumberFormat.decimalPattern()
+                                                .format(
+                                                    postMdl.post.totalActive),
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                fontSize: 22,
+                                                fontFamily: 'Inter'),
                                           ),
                                   ),
                                 ],
@@ -388,11 +549,70 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ),
                     ],
                   ),
+                  Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(top: 30, right: 20, bottom: 10),
+                        padding: EdgeInsets.all(10),
+                        width: double.infinity,
+                        child: Text(
+                          'Global Data',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white),
+                        ),
+                      ),
+
+                      //Single List Item
+                      GlobalListItem(
+                        title: 'Global new cases',
+                        count: postMdl.loading
+                            ? 'Loading'
+                            : NumberFormat.decimalPattern()
+                                .format(postMdl.post.globalNewCases),
+                      ),
+                      GlobalListItem(
+                        title: 'Global new deaths',
+                        count: postMdl.loading
+                            ? 'Loading'
+                            : NumberFormat.decimalPattern()
+                                .format(postMdl.post.globalNewDeaths),
+                      ),
+
+                      GlobalListItem(
+                        title: 'Global total cases',
+                        count: postMdl.loading
+                            ? 'Loading'
+                            : NumberFormat.decimalPattern()
+                                .format(postMdl.post.globalTotalCases),
+                      ),
+                      GlobalListItem(
+                        title: 'Global total recovered',
+                        count: postMdl.loading
+                            ? 'Loading'
+                            : NumberFormat.decimalPattern()
+                                .format(postMdl.post.globalTotalRecovered),
+                      ),
+                      GlobalListItem(
+                        title: 'Global total deaths',
+                        count: postMdl.loading
+                            ? 'Loading'
+                            : NumberFormat.decimalPattern()
+                                .format(postMdl.post.globalTotalDeaths),
+                      ),
+                      //Single List Item
+                    ],
+                  ),
                   Container(
-                    margin: EdgeInsets.only(top: 30, right: 20, bottom: 10),
+                    padding: EdgeInsets.all(10),
                     width: double.infinity,
-                    child: Text('Hello'),
-                  )
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Developed by Thusatharan',
+                      style: TextStyle(color: Colors.white54),
+                    ),
+                  ),
                 ],
               )
             ],

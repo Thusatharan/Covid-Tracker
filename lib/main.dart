@@ -1,5 +1,6 @@
 import 'package:corona_stats/HomePage.dart';
 import 'package:corona_stats/Providers/stats_provider.dart';
+import 'package:corona_stats/Widgets/tweencolor.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
         accentColor: Color.fromRGBO(27, 133, 27, 1),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomeScreen(),
+      home: TweenColorScreen(),
     );
   }
 }

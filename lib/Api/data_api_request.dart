@@ -25,6 +25,5 @@ Future getSinglePostData(context) async {
   } catch (e) {
     print(e);
   }
-  print(stats.updatedAt);
   return stats;
 }

@@ -31,11 +31,23 @@ dependencies:
   intl: ^0.15.6
   provider: ^4.3.3
   http: ^0.12.2
+  loading_indicator: ^1.2.0
+  flutter_launcher_icons: ^0.8.1
+  flutter_native_splash: ^0.2.9
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/corona_green.png"
+
+flutter_native_splash:
+  image: assets/images/splash.png
+  color: "42a5f5"
+  fill: true
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
